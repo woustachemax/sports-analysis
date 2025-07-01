@@ -35,16 +35,21 @@ export const createMLRoutes = (
         }
     });
 
-    router.post('/predict', async (req: Request, res: Response) => {
+    router.post('/predict', async (req: Request, res: Response): Promise<void> => {
         try {
-            const { opponent, venue, competition }: { opponent?: string; venue?: string; competition?: string } = req.body;
+            const { opponent, venue, competition } = req.body as { 
+                opponent?: string; 
+                venue?: string; 
+                competition?: string; 
+            };
 
             if (!opponent || !venue || !competition) {
                 const response: ApiResponse = {
                     success: false,
                     error: 'Missing required fields: opponent, venue, competition'
                 };
-                return res.status(400).json(response);
+                res.status(400).json(response);
+                return;
             }
 
             const prediction = await mlService.predictMatch(opponent, venue, competition);
@@ -109,4 +114,3 @@ export const createMLRoutes = (
 
     return router;
 };
-

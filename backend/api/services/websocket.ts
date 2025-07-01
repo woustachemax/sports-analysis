@@ -1,6 +1,6 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import http from 'http';
-import { CustomWebSocket, WebSocketMessage } from '../types';
+import { WebSocketMessage } from '../types';
 
 export const setupWebSocket = (server: http.Server) => {
     const wss = new WebSocketServer({ server });
@@ -13,7 +13,7 @@ export const setupWebSocket = (server: http.Server) => {
         });
     };
 
-    wss.on('connection', (ws: CustomWebSocket) => {
+    wss.on('connection', (ws: WebSocket & { subscriptions?: string[] }) => {
         console.log('Client connected to WebSocket');
         
         ws.on('message', (message: WebSocket.RawData) => {
@@ -34,3 +34,4 @@ export const setupWebSocket = (server: http.Server) => {
 
     return { wss, broadcastToClients };
 };
+

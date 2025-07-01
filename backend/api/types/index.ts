@@ -1,3 +1,5 @@
+import WebSocket from 'ws';
+
 export interface Match {
     id?: number;
     date: string;
